@@ -102,7 +102,7 @@ def AddASingle(username,password):
             response = requests.request("POST", url, auth=(username, password), data=payload, verify=False)
             print(response.text)
 
-def ChangeAPtrDr(username,password,record,new_ip,option):
+def ChangeAPtrList(username,password,record,new_ip,option):
     session = requests.Session()
     session.verify = False
 
@@ -177,7 +177,7 @@ with open('my/directory/path/file.txt', 'r') as file:
             continue
         split_line = line.split()
         try:
-            ChangeAPtrDr(username, password, split_line[0], split_line[1], '1')
+            ChangeAPtrList(username, password, split_line[0], split_line[1], '1')
             print(f"######################################")
         except IndexError:
             continue
