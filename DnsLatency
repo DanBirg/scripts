@@ -5,7 +5,7 @@ import sys
 import subprocess
 from datetime import datetime
 
-default_time = 2000000 #<<<--- ENTER YOUR DEFAULT NUMBER OF TIMES TO QUERY DNS SERVER
+default_times = 2000000 #<<<--- ENTER YOUR DEFAULT NUMBER OF TIMES TO QUERY DNS SERVER
 default_latency = 0.7 #<<<--- ENTER YOUR DEFAULT VALID LATENCY 
 default_dns = '8.8.8.8' #<<<--- ENTER YOUR DEFAULT DNS SERVER
 
