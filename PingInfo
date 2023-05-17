@@ -7,8 +7,15 @@
 # IT READS THE COMMAND LINE ARGUMENTS 
 #
 #                       TO EXECUTE:
+# LINUX
+#--------
 # EXAMPLE 1: sudo ./PinfInfo.py 172.16.1.0/24
 # EXAMPLE 1: sudo ./PinfInfo.py 172.16.1.0/24 172.16.2.0/23
+#
+# MAC
+#---------
+# EXAMPLE 1: sudo su - ; cd the/correct/location/ ; python3.x PingInfo.py 172.16.1.0/24
+#
 #############################################################
 try:
     from icmplib import multiping
