@@ -1,0 +1,143 @@
+def splitIpAddress(ipaddress):
+    """ This function splits the ip address into a list
+    @:param ipaddress - the ip address to split
+    @:return split_ipaddress - the list"""
+
+    split_ipaddress = ipaddress.split('.')
+    return split_ipaddress
+
+def checkValidIp(ipaddress):
+    """ This function checks if the ip address that was entered is a legit ip address
+    @:param ipaddress - the ip address to check
+    @:return returns true if valid and false if not"""
+
+    if len(splitIpAddress(ipaddress)) == 4:
+        splitip = splitIpAddress(ipaddress)
+        for octat in splitip:
+            try:
+                if int(octat) >= 0 and int(octat) <= 255:
+                    continue
+            except ValueError:
+                return False
+            else:
+                return False
+        return True
+    else:
+        return False
+
+def convertToBinary(num):
+    """ This function converts a number to binary
+    @:param num - the value that needs convertion
+    @:return binary_representation - the actual binary number of the original value"""
+
+    if(type(num) == str):
+        num = int(num)
+        binary_representation = format(num, '08b')
+        return binary_representation
+    else:
+        binary_representation = format(num,'08b')
+        return binary_representation
+
+def getNextIpAddress(ipaddress):
+    """ This function calculated the next ip address
+    @:param ipaddress - the original ip address
+    @:return next_ip_address - the next valid ip address"""
+
+    ip_parts = splitIpAddress(ipaddress)
+    ip_int = int(ip_parts[0]) * 256 ** 3 + int(ip_parts[1]) * 256 ** 2 + int(ip_parts[2]) * 256 + int(ip_parts[3])
+
+    next_ip_int = ip_int + 1
+
+    next_ip_address = '.'.join([str(next_ip_int >> 24 & 255), str(next_ip_int >> 16 & 255),
+                                str(next_ip_int >> 8 & 255), str(next_ip_int & 255)])
+
+    return next_ip_address
+
+def getSubnetMask(subnetmask):
+    """ This function returns the subnet mask in x.x.x.0 format
+    @:param sunetmask - the suffix number
+    @:return the x.x.x.0 format of return"""
+
+    if int(subnetmask) > 0 and int(subnetmask) <= 32:
+        subnet_bits = ''
+        counter = 0
+        for i in range(int(subnetmask)):
+            subnet_bits = subnet_bits + '1'
+            counter += 1
+            if counter == 8:
+                subnet_bits = subnet_bits + '.'
+            if counter == 16:
+                subnet_bits = subnet_bits + '.'
+            if counter == 24:
+                subnet_bits = subnet_bits + '.'
+
+        zeros = 32 - int(subnetmask)
+        for j in range(zeros):
+            subnet_bits = subnet_bits + '0'
+            counter += 1
+            if counter == 8:
+                subnet_bits = subnet_bits + '.'
+            if counter == 16:
+                subnet_bits = subnet_bits + '.'
+            if counter == 24:
+                subnet_bits = subnet_bits + '.'
+
+        split_subnet_bits = subnet_bits.split('.')
+        one = int(split_subnet_bits[0],2)
+        two = int(split_subnet_bits[1],2)
+        three = int(split_subnet_bits[2],2)
+        four = int(split_subnet_bits[3],2)
+        return f'{one}.{two}.{three}.{four}'
+
+    else:
+        return '-1'
+
+def getNetworkAddress(ipaddress,subnetmask):
+    """ This function returns the network address of the network
+    @:param ipaddress - the ip address to check
+    @:param sunetmask - the /xx suffic num
+    @:return network_address - the network address"""
+
+    ip_parts = ipaddress.split('.')
+    subnet = getSubnetMask(subnetmask)
+    subnet_parts = subnet.split('.')
+
+    network_parts = [str(int(ip_parts[i]) & int(subnet_parts[i])) for i in range(4)]
+    network_address = '.'.join(network_parts)
+
+    return network_address
+
+def getBroadcastAddress(ipaddress, subnetmask):
+    """ This function returns the broadcast address of the network
+    @:param ipaddress - the ip address to check
+    @:param sunetmask - the /xx suffic num
+    @:return broadcast_address - the broadcast address"""
+
+    # Split IP address and subnet mask into octets
+    ip_parts = ipaddress.split('.')
+    subnet = getSubnetMask(subnetmask)
+    subnet_parts = subnet.split('.')
+
+    complement_parts = [str(255 - int(subnet_parts[i])) for i in range(4)]
+
+    broadcast_parts = [str(int(ip_parts[i]) | int(complement_parts[i])) for i in range(4)]
+    broadcast_address = '.'.join(broadcast_parts)
+
+    return broadcast_address
+
+def checkIfNetworkAdd(network,start_range):
+    """ This function checks if the start_range address provided is a network address and if it is then it returns the next available valid ip
+    @:param network - the network with /xx suffix
+    @:param start_range - the ip address to check
+    @:return start_range - if the start_range address is identical to network then it returns the next available address"""
+
+    split_network = network.split('/')
+    network = split_network[0]
+    ip_addr = start_range
+    if ip_addr == network:
+        next_ip_address = getNextIpAddress(ip_addr)
+        start_range = next_ip_address
+        #print(start_range)
+        return start_range
+    else:
+        return start_range
