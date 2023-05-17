@@ -86,6 +86,8 @@ except ValueError:
     print("Invalid input 3")
 except ModuleNotFoundError:
     print("You don't have the correct module to run it")
+except KeyboardInterrupt:
+    print("Exiting")
 
 
 
