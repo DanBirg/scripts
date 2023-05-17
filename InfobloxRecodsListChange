@@ -1,0 +1,107 @@
+#!/usr/bin/env python3.7
+
+import requests
+import json
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning) # YOU CAN DELETE THIS LINE IF YOU HAVE HTTP OR HAVE A CERTIFICATE
+
+def ChangeAPtrDr(username,password,record,new_ip,option):
+    session = requests.Session()
+    session.verify = False
+
+    IB_HOST = "https://myorgdns.local" # CHANGE THE URL FOR THE DNS NAME
+    IB_VIEW = "default"
+    RECORD_TYPE_A = "a"
+    RECORD_TYPE_PTR = "ptr"
+
+    session = requests.Session()
+    session.verify = False  # Disable SSL verification, replace with valid cert in production
+    
+    api_endpoint = f"{IB_HOST}/wapi/v2.10"
+    api_endpoint_a = f"{IB_HOST}/wapi/v2.10/record:{RECORD_TYPE_A}"
+    api_endpoint_ptr = f"{IB_HOST}/wapi/v2.10/record:{RECORD_TYPE_PTR}"
+
+    choice = option
+
+    if (choice == "1"):
+        OLD_RECORD_NAME = record
+        NEW_RECORD_IP = new_ip
+
+        response = requests.get(
+            f'{api_endpoint_a}?name={OLD_RECORD_NAME}',
+            auth=(username, password),
+            verify=False
+        )
+
+        if response.status_code == 200:
+            try:
+                try:
+                    record_data_a = json.loads(response.content)[0]
+                    record_ref_a = record_data_a["_ref"]
+
+                    api_data_a = {
+                        "ipv4addr": f"{NEW_RECORD_IP}"
+                    }
+
+                    # Send 
+                    api_endpoint_a = f"{IB_HOST}/wapi/v2.10/{record_ref_a}"
+                    session.put(api_endpoint_a, auth=(username, password), data=json.dumps(api_data_a),verify=False)
+
+                    print(f"{record} changed to {new_ip} record changed")
+                except IndexError:
+                    print(f"{record} did not change to {new_ip} no such A record           <<<<<<<<<<< check record")
+                try:
+                    ptr_query = f"ptrdname={OLD_RECORD_NAME}"
+                    ptr_url = f"{api_endpoint_ptr}?{ptr_query}"
+                    ptr_response = requests.get(ptr_url, auth=(username, password), verify=False)
+                    ptr_json = json.loads(ptr_response.text)
+                    ptr_obj_ref = ptr_json[0]["_ref"]
+                    new_ptr = f"{NEW_RECORD_IP}"
+
+                    # Update the PTR record object with the new name
+                    ptr_data = {"ipv4addr":new_ptr}
+                    ptr_url = f"{api_endpoint}/{ptr_obj_ref}"
+                    requests.put(ptr_url, auth=(username, password), verify=False,data=json.dumps(ptr_data))
+                    print(f"{record} changed to {new_ip} PTR record changed")
+                except IndexError:
+                    print(f"{record} did not change to {new_ip} no such PTR record           <<<<<<<<<<< check record")
+            except IndexError:
+                print("ERROR")
+
+# MAIN======================
+
+username = input("enter username: ")
+password = input("enter password: ")
+
+with open('my/directory/path/file.txt', 'r') as file:
+    for line in file:
+        if line == "":
+            continue
+        split_line = line.split()
+        try:
+            ChangeAPtrDr(username, password, split_line[0], split_line[1], '1')
+            print(f"######################################")
+        except IndexError:
+            continue
+        except Exception as e:
+            print(f"error: {e}")
+            continue
+        
+        
+        
+ # THE FILES  my/directory/path/file.txt SHOULD LOOK LIKE THIS:
+ # test.funnycomp.loca 172.16.1.10
+ # test1.funnycomp.loca 172.16.1.11
+ # test2.funnycomp.loca 172.16.1.12
+ # test3.funnycomp.loca 172.16.1.13
+ # test4.funnycomp.loca 172.16.1.14
+ #
+ # IT SHOULD BE JUST A SIMPLE TEXT FILE WITH TWO COLUMNS:
+ # FIRST COLUMN: THE FQDN THAT NEEDS ITS IP CHANGED
+ # SECOND COLUMN: THE NEW IP ADDRESS
+ 
+
+
+
+
