@@ -204,7 +204,7 @@ print(getSubnetMask(24)) # 255.255.255.0
 print(getNetworkAddress('1.1.1.1','24')) # 1.1.1.0
 print(getNetworkAddress('1.1.1.1',24)) # 1.1.1.0
 print(getBroadcastAddress('1.1.1.1','24')) # 1.1.1.255
-print(CheckIfNetworkAdd('1.1.1.0/24','1.1.1.0')) # 1.1.1.1
-print(CheckIfNetworkAdd('1.1.1.0/24','1.1.1.2')) # 1.1.1.2
+print(checkIfNetworkAdd('1.1.1.0/24','1.1.1.0')) # 1.1.1.1
+print(checkIfNetworkAdd('1.1.1.0/24','1.1.1.2')) # 1.1.1.2
 print(getNetworkSize('24')) # 254
 print(getNetworkSize('21')) # 2046
