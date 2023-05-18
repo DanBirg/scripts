@@ -23,7 +23,7 @@ try:
     import sys
     import socket
 except ModuleNotFoundError:
-    print("You don't have to correct package")
+    print("You don't have the correct package")
 
 
 # MAIN
