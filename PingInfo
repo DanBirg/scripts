@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.7 
 
 #############################################################
-#       IN THE UPPER LINE USER ANY PYTHON 3.X YOU NEED
+#       IN THE UPPER LINE USE ANY PYTHON 3.X YOU NEED
 #
 # TO RUN THI YOU NEED TO USE SUDO OR RUN IT WITH ROOT USER
 # IT READS THE COMMAND LINE ARGUMENTS 
