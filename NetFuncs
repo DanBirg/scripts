@@ -187,6 +187,30 @@ def getNetworkSize(subnet_mask):
         return net_size
     except Exception as e:
         print(e)
+
+def changeMacPatern(macaddress):
+    """ This function takes any mac address pattern and returns only xxxx.yyyy.zzzz pattern
+    @:param macaddress - any mac address pattern
+    @:return xxxx.yyyy.zzzz mac address pattern"""
+    if ':' in macaddress:
+        split_mac = macaddress.split(':')
+        mac_len = len(split_mac)
+        if mac_len == 3:
+            return (f'{split_mac[0]}.{split_mac[1]}.{split_mac[2]}')
+        if mac_len == 6:
+            return (f'{split_mac[0]}{split_mac[1]}.{split_mac[2]}{split_mac[3]}.{split_mac[4]}{split_mac[5]}')
+    else:
+        split_mac = macaddress.split('.')
+        mac_len = len(split_mac)
+        if mac_len == 1:
+            split_mac = list(macaddress)
+            return (f'{split_mac[0]}{split_mac[1]}{split_mac[2]}{split_mac[3]}.'
+                    f'{split_mac[4]}{split_mac[5]}{split_mac[6]}{split_mac[7]}.'
+                    f'{split_mac[8]}{split_mac[9]}{split_mac[10]}{split_mac[11]}')
+        if mac_len == 3:
+            return  macaddress
+        if mac_len == 6:
+            return (f'{split_mac[0]}{split_mac[1]}.{split_mac[2]}{split_mac[3]}.{split_mac[4]}{split_mac[5]}')
         
     
     
