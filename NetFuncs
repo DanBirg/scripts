@@ -3,6 +3,8 @@
 import subprocess
 
 def getIdName():
+    """ This function gets the name of the username connected to the unix machine 
+    @:return username of the id"""
     id = subprocess.check_output("id -un | cut -d'(' -f1", shell=True)
     return id.decode().strip()
 
