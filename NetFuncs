@@ -1,5 +1,9 @@
 #!/usr/bin/env python3.7 
 
+def getIdName():
+    id = subprocess.check_output("id -un | cut -d'(' -f1", shell=True)
+    return id.decode().strip()
+
 def splitIpAddress(ipaddress):
     """ This function splits the ip address into a list
     @:param ipaddress - the ip address to split
