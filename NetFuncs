@@ -1,5 +1,7 @@
 #!/usr/bin/env python3.7 
 
+import subprocess
+
 def getIdName():
     id = subprocess.check_output("id -un | cut -d'(' -f1", shell=True)
     return id.decode().strip()
