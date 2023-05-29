@@ -43,14 +43,13 @@ def CheckForZone(username,password,zone_name):
             #print(f"The zone {zone_name} does not exist.")
             return False
     else:
-        print(f"API request failed with status code {response.status_code}.")
+        print(f"API failed ")
         
 
 def AddASingle(username,password):
     """ The function adds one A record and the relevant PTR record
     @:param username - infoblox username
-    @:param password - infoblox password
-    @:param ssl_cert - the certification used for the secured connection"""
+    @:param password - infoblox password"""
 
     print("")
     print("CTRL+C to go back")
@@ -164,6 +163,82 @@ def ChangeAPtrList(username,password,record,new_ip,option):
                     print(f"{record} did not change to {new_ip} no such PTR record           <<<<<<<<<<< check record")
             except IndexError:
                 print("ERROR")
+                
+def AddCSingle(username,password):
+    """ The function adds Cname records
+    @:param username - infoblox username
+    @:param password - infoblox password"""
+
+    while True:
+        url = "https://infoblox.local/wapi/v2.7/record:cname"
+
+        cname = input("Enter new Cname (without domain-name): ")
+        cname_domain = input("Enter new Cname domain: ")
+        canonical = input("Enter existing A record (without domain-name): ")
+        canonical_domain = input("Enter existing A record domain: ")
+        if (cname == "" or canonical == "" or cname_domain == "" or canonical_domain == ""):
+            print("One of the parameters is missing!")
+            print("\n")
+            continue
+
+        if((CheckForZone(username,password,cname_domain) == True) and (CheckForZone(username,password,canonical_domain) == False)):
+
+            session = requests.Session()
+            session.verify = False
+            payload = json.dumps({
+                "name": cname+'.'+cname_domain,
+                "canonical": canonical+'.'+canonical_domain
+            })
+
+            response = requests.request("POST", url, auth=(username, password), data=payload, verify=False)
+            #print(response.content.decode())
+            record = f'{cname}.{cname_domain}'
+            print(record)
+            os.system(f"dig @infoblox.local {record} +short")
+            print("=========================================")
+        else:
+            print("")
+            print("one of the zones does not exist\n")
+            continue
+
+def ChangeCSingle(username,password):
+    """ The function changes Cname records
+        @:param username - infoblox username
+        @:param password - infoblox password"""
+
+    while True:
+        old_cname = input("Enter existing CNAME (without domain-name): ")
+        old_cname_domain = input("Enter existing CNAME domain: ")
+        new_cname = input("Enter new Cname (without domain-name): ")
+        new_cname_domain = input("Enter new Cname domain: ")
+        if ((CheckForZone(username, password, old_cname_domain) == True) and (CheckForZone(username, password, new_cname_domain) == True)):
+            search_url = f"https://infoblox.local/wapi/v2.10/record:cname?name={old_cname}.{old_cname_domain}"
+            response = requests.get(search_url, auth=(username, password), verify=False)
+            response_data = response.json()
+            if len(response_data) == 0:
+                print(f"No CNAME record found with name '{old_cname}.{old_cname_domain}'.")
+            else:
+                cname_record = response_data[0]
+
+                # Modify the CNAME record name
+                new_name = f"{new_cname}.{new_cname_domain}"
+                cname_record['name'] = new_name
+
+                # Update the CNAME record
+                update_url = f'https://infoblox.test/wapi/v2.10/{cname_record["_ref"]}'
+
+                response = requests.put(update_url, data=json.dumps(cname_record), auth=(username, password), verify=False)
+
+                if response.status_code == 200:
+                    print(f"CNAME '{old_cname}.{old_cname_domain}' changed to '{new_cname}.{new_cname_domain}'.")
+                else:
+                    print("Could not create the CNAME.")
+        else:
+            print("")
+            print("one of the zones does not exist\n")
+            continue
+                
+
 
 # MAIN======================
 
