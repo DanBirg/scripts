@@ -1,4 +1,10 @@
 #!/bin/bash
+####################################################################################
+# example of execution - digging for google.com 1000 times and it displays the loop
+# ./testdns google.com 1000
+# example of execution - digging for google.com 1000 times and it does not dispaay the loop (the dd flag)
+# ./testdns google.com 1000 dd
+####################################################################################
 
 print_and_delete() {  # THE FUNCTION CLEARS THE PRIVIOUS LINE AND PRINTS THE NEXT ONE
   local message=$1
