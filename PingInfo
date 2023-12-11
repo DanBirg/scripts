@@ -50,7 +50,9 @@ try:
             list.append(str(ip))
 
         try:
-            hosts = multiping(list, count=1, interval=0.5, timeout=1.5)
+            # IF YOU'RE WORKING ON A WORKSTATION SUCH AS PC/MAC CONSIDER CHANGING THE CONCURRENT_TASKS TO AS PREDEFINED
+            # YOU CAN PLAY WITH THE PARAMETERS SO YOU'LL GET A QUICKER RESPONSE FOR EXAMPLE CHANGE THE COUNT=1 AND CONCURRENT_TASKS=50
+            hosts = multiping(list, count=2, interval=0.5, timeout=1.5, concurrent_tasks=20)
         except PermissionError:
             print(f"You don't have permissions to run this option")
             print("\n")
@@ -67,20 +69,20 @@ try:
             if host.is_alive:
                 try:
                     resolve = socket.gethostbyaddr(str(host.address))
-                    print("{0:15s} {1:10s} {2:10s}".format(host.address, resolve[0], "is up!"))
+                    print(f'{host.address:15} {resolve[0]:40}      up!')
                     up = up + 1
                     continue
                 except socket.herror:
-                    print("{0:25s} {1:10s}".format(host.address, "no A Record is up!"))
+                    print(f'{host.address:15} no A record                                   up!')
                     up = up + 1
             else:
                 try:
                     resolve = socket.gethostbyaddr(str(host.address))
-                    print("{0:16s} {1:31s} {2:10s}".format(host.address, resolve[0], "<<<=== is DOWN!"))
+                    print(f'{host.address:15} {resolve[0]:37}DOWN!')
                     down = down + 1
                     continue
                 except socket.herror:
-                    print("{0:34s} {1:32s}".format(host.address, "no A Record <<<=== is DOWN!"))
+                    print(f'{host.address:15} no A record                          DOWN!')
                     down = down + 1
         print("===========================================================")
         print("IPs Up: " + str(up))
