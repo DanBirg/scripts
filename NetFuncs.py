@@ -229,7 +229,10 @@ def changeMacPatern(macaddress):
     @:param host - the name of the hostname
     @:return returns true if it is pingalbe and false if not"""
 
-    result = subprocess.run(['ping', '-c', '1', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    # Use the subprocess module to run the ping command
+    result = subprocess.run(['ping', '-c', '1', '-W', '2', '-i', '1', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+    # Check the return code to determine if the ping was successful
     if result.returncode == 0:
         return True
     else:
