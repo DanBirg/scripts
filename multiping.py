@@ -14,8 +14,8 @@ import NetFuncs as nf ## please import NetFuncs.py file for all the functions ne
 # =============VARIABLES==============
 
 to = 1 # timeout
-hosts_file = "/location/of/you/file/multiping_hosts.txt"
-edit_host_file = "vi /location/of/you/file/multiping_hosts.txt"
+hosts_file = "/location/of/your/file/multiping_hosts.txt"
+edit_host_file = "vi /location/of/your/file/multiping_hosts.txt"
 
 # =============FUNCTIONS==============
 
