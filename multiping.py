@@ -131,9 +131,10 @@ try:
         print(f'pinged ({count}) times')
         print(f'refresh ({to}s)')
         print(f'{datetime.datetime.now()}\n')
-        print(f'| Host                | DNS Record                              | Result             |  Suceess |  Fail')
-        print(f'========================================================================================================')
 
+        print(f"{'| Host':21} {'| DNS Record':41} {'| Result':20} {'|  Suceess':10} {'|  Fail':5}")
+        print(f'=' * 105 )
+        
         # printing all the results 
         for res in result_all: 
             print(res)
