@@ -224,7 +224,7 @@ def changeMacPatern(macaddress):
     except Exception as e:
         print(e)
         
- def checkPing(host):
+def checkPing(host):
     """ the function checks if the address is pingable
     @:param host - the name of the hostname
     @:return returns true if it is pingalbe and false if not"""
@@ -242,19 +242,19 @@ def changeMacPatern(macaddress):
     
  # MAIN
  
-print(splitIpAddress('1.1.1.1')) # ['1', '1', '1', '1']
-print(checkValidIp('1.1.1.1')) # True
-print(checkValidIp('255.255.255.2555')) # False
-print(convertToBinary(255)) # 11111111
-print(convertToBinary('255')) # 11111111
-print(getNextIpAddress('1.1.1.1')) # 1.1.1.2
-print(getNextIpAddress('255.255.255.255')) # 255.255.255.255
-print(getSubnetMask('24')) # 255.255.255.0
-print(getSubnetMask(24)) # 255.255.255.0
-print(getNetworkAddress('1.1.1.1','24')) # 1.1.1.0
-print(getNetworkAddress('1.1.1.1',24)) # 1.1.1.0
-print(getBroadcastAddress('1.1.1.1','24')) # 1.1.1.255
-print(checkIfNetworkAdd('1.1.1.0/24','1.1.1.0')) # 1.1.1.1
-print(checkIfNetworkAdd('1.1.1.0/24','1.1.1.2')) # 1.1.1.2
-print(getNetworkSize('24')) # 254
-print(getNetworkSize('21')) # 2046
+#print(splitIpAddress('1.1.1.1')) # ['1', '1', '1', '1']
+#print(checkValidIp('1.1.1.1')) # True
+#print(checkValidIp('255.255.255.2555')) # False
+#print(convertToBinary(255)) # 11111111
+#print(convertToBinary('255')) # 11111111
+#print(getNextIpAddress('1.1.1.1')) # 1.1.1.2
+#print(getNextIpAddress('255.255.255.255')) # 255.255.255.255
+#print(getSubnetMask('24')) # 255.255.255.0
+#print(getSubnetMask(24)) # 255.255.255.0
+#print(getNetworkAddress('1.1.1.1','24')) # 1.1.1.0
+#print(getNetworkAddress('1.1.1.1',24)) # 1.1.1.0
+#print(getBroadcastAddress('1.1.1.1','24')) # 1.1.1.255
+#print(checkIfNetworkAdd('1.1.1.0/24','1.1.1.0')) # 1.1.1.1
+#print(checkIfNetworkAdd('1.1.1.0/24','1.1.1.2')) # 1.1.1.2
+#print(getNetworkSize('24')) # 254
+#print(getNetworkSize('21')) # 2046
